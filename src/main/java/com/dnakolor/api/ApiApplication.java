@@ -3,10 +3,16 @@ package com.dnakolor.api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
-@PropertySource({"classpath:server.properties", "classpath:key.properties"})
+@ComponentScan(basePackages = {"com.dnakolor.api.services"})
+@ComponentScan(basePackages = {"com.dnakolor.api.config"})
+@ComponentScan(basePackages = {"com.dnakolor.api.filter"})
+@ComponentScan(basePackages = {"com.dnakolor.api.Controllers"})
+@ComponentScan(basePackages = {"com.dnakolor.api.repository"})
+@ComponentScan(basePackages = {"com.dnakolor.api.utils"})
 public class ApiApplication {
 
 	public static void main(String[] args) {

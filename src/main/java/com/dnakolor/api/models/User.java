@@ -20,13 +20,15 @@ import java.util.List;
 @Setter
 public class User implements UserDetails, Serializable{
     @Id
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = true, unique = true)
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
     @Column(name = "EMAIL", nullable = false, unique = true, length = 100)
     private String email;
     @Column(name = "PASSWORD", nullable = false)
     private String password;
+    @Column(name = "FULL_NAME", nullable = false, length = 100)
+    private String fullName;
     @Column(name = "ROLE", nullable = false)
     private String role;
     @Column(name = "STATUS", nullable = false)
@@ -62,5 +64,13 @@ public class User implements UserDetails, Serializable{
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User(String email, String password, String fullName) {
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.role = "ROLE_USER";
+        this.status = "ACTIVE";
     }
 }

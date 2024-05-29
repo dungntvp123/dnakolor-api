@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScans;
 @ComponentScan(basePackages = {"com.dnakolor.api.filter"})
 @ComponentScan(basePackages = {"com.dnakolor.api.Controllers"})
 @ComponentScan(basePackages = {"com.dnakolor.api.repository"})
+@ComponentScan(basePackages = {"com.dnakolor.api.utils"})
 public class ApiApplication {
 
 	public static void main(String[] args) {

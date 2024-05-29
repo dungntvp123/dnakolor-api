@@ -4,6 +4,7 @@ import com.dnakolor.api.DTOs.LoginUserDTO;
 import com.dnakolor.api.DTOs.RegisterUserDTO;
 import com.dnakolor.api.models.User;
 import com.dnakolor.api.response.LoginResponse;
+import com.dnakolor.api.response.ResponseBody;
 import com.dnakolor.api.services.AuthenticationService;
 import com.dnakolor.api.services.JwtService;
 import org.springframework.context.annotation.Configuration;
@@ -26,16 +27,18 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDTO registerUserDto) {
+    public ResponseEntity<?> register(@RequestBody RegisterUserDTO registerUserDto) {
         try{
-            User registeredUser = authenticationService.signup(registerUserDto);
-            return ResponseEntity.ok(registeredUser);
+            ResponseBody registeredUser = authenticationService.signup(registerUserDto);
+            ResponseBody responseBody = new ResponseBody(registeredUser.getMessage(), registeredUser.getBody());
+            return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            ResponseBody re = new ResponseBody("User registration failed", null);
+            return ResponseEntity.badRequest().body(re);
         }
     }
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDTO loginUserDto) {
+    public ResponseEntity<?> authenticate(@RequestBody LoginUserDTO loginUserDto) {
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
@@ -43,7 +46,8 @@ public class AuthenticationController {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
+        ResponseBody responseBody = new ResponseBody<>("User authenticated successfully", loginResponse);
 
-        return ResponseEntity.ok(loginResponse);
+        return ResponseEntity.ok(responseBody);
     }
 }
